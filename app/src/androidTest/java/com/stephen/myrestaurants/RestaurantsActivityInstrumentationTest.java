@@ -21,19 +21,21 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
 
+import com.stephen.myrestaurants.ui.RestaurantListActivity;
+
 @RunWith(AndroidJUnit4.class)
 public class RestaurantsActivityInstrumentationTest {
     @Rule
-    public ActivityScenarioRule<RestaurantsActivity> activityTestRule =
-            new ActivityScenarioRule<>(RestaurantsActivity.class);
+    public ActivityScenarioRule<RestaurantListActivity> activityTestRule =
+            new ActivityScenarioRule<>(RestaurantListActivity.class);
 
     private View activityDecorView;
 
     @Before
     public void setUp() {
-        activityTestRule.getScenario().onActivity(new ActivityScenario.ActivityAction<RestaurantsActivity>() {
+        activityTestRule.getScenario().onActivity(new ActivityScenario.ActivityAction<RestaurantListActivity>() {
             @Override
-            public void perform(RestaurantsActivity activity) {
+            public void perform(RestaurantListActivity activity) {
                 activityDecorView = activity.getWindow().getDecorView();
             }
         });
@@ -43,7 +45,7 @@ public class RestaurantsActivityInstrumentationTest {
     public void listItemClickDisplaysToastWithCorrectRestaurant(){
         String restaurantName = "Mi Mero Mole";
         onData(anything())
-                .inAdapterView(withId(R.id.listView))
+                .inAdapterView(withId(R.id.recyclerView))
                 .atPosition(0)
                 .perform(click());
         onView(withText(restaurantName))

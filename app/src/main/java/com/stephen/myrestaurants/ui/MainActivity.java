@@ -1,14 +1,14 @@
-package com.stephen.myrestaurants;
+package com.stephen.myrestaurants.ui;
 
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.stephen.myrestaurants.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v){
         if (v == mFindRestaurantsButton) {
             String location = mLocationEditText.getText().toString();
-            Intent intent = new Intent(MainActivity.this, RestaurantsActivity.class);
+            Intent intent = new Intent(MainActivity.this, RestaurantListActivity.class);
             intent.putExtra("location", location);
             startActivity(intent);
         }
