@@ -2,13 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
+    android:layout_marginTop="5dp"
     android:layout_height="wrap_content">
 
     <ImageView
         android:layout_width="130dp"
         android:layout_height="100dp"
         android:id="@+id/restaurantImageView"
-        android:src="@drawable/waffles"
+        android:src="@drawable/food_dish"
         android:scaleType="centerCrop"/>
 
     <LinearLayout
@@ -25,7 +26,7 @@
             android:textSize="20dp"
             android:textStyle="bold"
             android:text="Restaurant Name"
-            android:textColor="@color/purple_700"/>
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,16 +37,18 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/ratingTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:text="Rating"
-                android:textColor="@color/teal_700" />
+                android:id="@+id/ratingTextView"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/colorAccent"/>
         </RelativeLayout>
     </LinearLayout>
+
 </LinearLayout>

@@ -1,98 +1,85 @@
 package com.stephen.myrestaurants.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.stephen.myrestaurants.Constants;
 import com.stephen.myrestaurants.R;
 import com.stephen.myrestaurants.adapters.RestaurantListAdapter;
-import com.stephen.myrestaurants.models.Business;
-import com.stephen.myrestaurants.models.YelpBusinessesSearchResponse;
-import com.stephen.myrestaurants.network.YelpApi;
-import com.stephen.myrestaurants.network.YelpClient;
+import com.stephen.myrestaurants.models.Restaurant;
+import com.stephen.myrestaurants.services.YelpService;
+import com.stephen.myrestaurants.util.OnRestaurantSelectedListener;
 
-import java.util.List;
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class RestaurantListActivity extends AppCompatActivity {
-    private static final String TAG = RestaurantListActivity.class.getSimpleName();
+import java.io.IOException;
+import java.util.ArrayList;
 
-    @BindView(R.id.recyclerView) RecyclerView mRecyclerView;
-    @BindView(R.id.errorTextView) TextView mErrorTextView;
-    @BindView(R.id.progressBar) ProgressBar mProgressBar;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
-    private RestaurantListAdapter mAdapter;
-
-    public List<Business> restaurants;
+public class RestaurantListActivity extends AppCompatActivity implements OnRestaurantSelectedListener {
+    private Integer mPosition;
+    ArrayList<Restaurant> mRestaurants;
+    String mSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurants);
-        ButterKnife.bind(this);
+        if (savedInstanceState != null){
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+                mPosition = savedInstanceState.getInt(Constants.EXTRA_KEY_POSITION);
+                mRestaurants = Parcels.unwrap(savedInstanceState.getParcelable(Constants.EXTRA_KEY_RESTAURANTS));
+                mSource = savedInstanceState.getString(Constants.KEY_SOURCE);
 
-        Intent intent = getIntent();
-        String location = intent.getStringExtra("location");
-
-        YelpApi client = YelpClient.getClient();
-
-        Call<YelpBusinessesSearchResponse> call = client.getRestaurants(location, "restaurants");
-
-        call.enqueue(new Callback<YelpBusinessesSearchResponse>() {
-            @Override
-            public void onResponse(Call<YelpBusinessesSearchResponse> call, Response<YelpBusinessesSearchResponse> response) {
-                hideProgressBar();
-
-                if (response.isSuccessful()) {
-                    restaurants = response.body().getBusinesses();
-                    mAdapter = new RestaurantListAdapter(RestaurantListActivity.this, restaurants);
-                    mRecyclerView.setAdapter(mAdapter);
-                    RecyclerView.LayoutManager layoutManager =
-                            new LinearLayoutManager(RestaurantListActivity.this);
-                    mRecyclerView.setLayoutManager(layoutManager);
-                    mRecyclerView.setHasFixedSize(true);
-
-                    showRestaurants();
-                } else {
-                    showUnsuccessfulMessage();
+                if (mPosition != null && mRestaurants != null){
+                    Intent intent = new Intent(this, RestaurantDetailActivity.class);
+                    intent.putExtra(Constants.EXTRA_KEY_POSITION, mPosition);
+                    intent.putExtra(Constants.EXTRA_KEY_RESTAURANTS, Parcels.wrap(mRestaurants));
+                    startActivity(intent);
                 }
             }
-
-            @Override
-            public void onFailure(Call<YelpBusinessesSearchResponse> call, Throwable t) {
-                hideProgressBar();
-                showFailureMessage();
-            }
-
-        });
+        }
     }
 
-    private void showFailureMessage() {
-        mErrorTextView.setText("Something went wrong. Please check your Internet connection and try again later");
-        mErrorTextView.setVisibility(View.VISIBLE);
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+
+        if (mPosition != null && mRestaurants != null){
+            outState.putInt(Constants.EXTRA_KEY_POSITION, mPosition);
+            outState.putParcelable(Constants.EXTRA_KEY_RESTAURANTS, Parcels.wrap(mRestaurants));
+            outState.putString(Constants.KEY_SOURCE, mSource);
+        }
     }
 
-    private void showUnsuccessfulMessage() {
-        mErrorTextView.setText("Something went wrong. Please try again later");
-        mErrorTextView.setVisibility(View.VISIBLE);
+    @Override
+    public void onRestaurantSelected(Integer position, ArrayList<Restaurant> restaurants, String source){
+        mPosition = position;
+        mRestaurants = restaurants;
+        mSource = source;
     }
 
-    private void showRestaurants() {
-        mRecyclerView.setVisibility(View.VISIBLE);
-    }
-
-    private void hideProgressBar() {
-        mProgressBar.setVisibility(View.GONE);
-    }
 }

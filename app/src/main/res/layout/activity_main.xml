@@ -2,15 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/teal_700">
-
+    android:background="@color/colorPrimaryText">
 
     <ImageView
-        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/myrestaurant" />
+        android:id="@+id/imageView"
+        android:src="@drawable/myrestaurant"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/appNameTextView"
@@ -19,31 +18,32 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="35dp"
-        android:fontFamily="@font/roboto_black_italic"
         android:text="MyRestaurants"
-        android:textColor="@color/purple_700"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+        android:textSize="60sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorTextIcons" />
 
     <Button
         android:id="@+id/findRestaurantsButton"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/savedRestaurantsButton"
+        android:layout_marginBottom="10dp"
         android:layout_centerHorizontal="true"
-        android:background="@color/black"
         android:text="Find Restaurants"
-        android:textColor="@color/white" />
+        android:textColor="@color/colorTextIcons"
+        android:background="@color/colorAccent"/>
 
+    <Button
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="My Saved Restaurants"
+        android:id="@+id/savedRestaurantsButton"
+        android:background="@color/colorAccent"
+        android:textColor="@color/colorTextIcons"
+        android:visibility="visible"
+        android:layout_marginBottom="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"/>
 
-    <EditText
-        android:id="@+id/locationEditText"
-        android:layout_width="224dp"
-        android:layout_height="85dp"
-        android:layout_above="@+id/findRestaurantsButton"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="11dp"
-        android:background="@color/white"
-        android:hint="Enter Zip Code"
-        android:padding="5dp" />
 </RelativeLayout>

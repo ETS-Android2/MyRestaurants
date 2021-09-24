@@ -1,15 +1,17 @@
-
 package com.stephen.myrestaurants.models;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class Business {
 
     @SerializedName("rating")
     @Expose
-    private Integer rating;
+    private Double rating;
     @SerializedName("price")
     @Expose
     private String price;
@@ -52,16 +54,17 @@ public class Business {
     @SerializedName("transactions")
     @Expose
     private List<String> transactions = null;
+    private String pushId;
 
     /**
      * No args constructor for use in serialization
-     * 
+     *
      */
     public Business() {
     }
 
     /**
-     * 
+     *
      * @param distance
      * @param rating
      * @param coordinates
@@ -78,7 +81,7 @@ public class Business {
      * @param id
      * @param categories
      */
-    public Business(Integer rating, String price, String phone, String id, String alias, Boolean isClosed, List<Category> categories, Integer reviewCount, String name, String url, Coordinates coordinates, String imageUrl, Location location, Double distance, List<String> transactions) {
+    public Business(Double rating, String price, String phone, String id, String alias, Boolean isClosed, List<Category> categories, Integer reviewCount, String name, String url, Coordinates coordinates, String imageUrl, Location location, Double distance, List<String> transactions) {
         super();
         this.rating = rating;
         this.price = price;
@@ -97,11 +100,11 @@ public class Business {
         this.transactions = transactions;
     }
 
-    public Integer getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Integer rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
@@ -215,6 +218,14 @@ public class Business {
 
     public void setTransactions(List<String> transactions) {
         this.transactions = transactions;
+    }
+
+    public String getPushId() {
+        return pushId;
+    }
+
+    public void setPushId(String pushId) {
+        this.pushId = pushId;
     }
 
 }
